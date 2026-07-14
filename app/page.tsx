@@ -139,7 +139,7 @@ export default function Home() {
         </div>
 
         <header className="hero">
-          <p className="hero-kicker">♬ 전국 병준이 자랑 대회 대상 수상 ♬</p>
+          <p className="hero-kicker">♬ 오늘 하루 병준이 하고 싶은 거 다 해 ♬</p>
           <h1>🎉 병준이 생일잔치 🎉</h1>
           <div className="blink-sign" aria-label="오늘의 주인공 병준">
             <span>오늘의</span>
