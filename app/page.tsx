@@ -131,7 +131,7 @@ export default function Home() {
 
         <div className="top-ribbon">
           <span>★ 경 축 ★</span>
-          <strong>대한민국 최고 생일남 인증</strong>
+          <strong>경축 병준이 열아홉번째 생일</strong>
           <span>★ 만 수 무 강 ★</span>
         </div>
 
