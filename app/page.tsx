@@ -1,6 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const birthdayMessages = [
   "병준아 항상 행복해라.",
@@ -194,9 +197,9 @@ export default function Home() {
         </div>
 
         <footer>
-          <img
+          <Image
             className="footer-favicon"
-            src="/favicon.svg"
+            src={`${basePath}/favicon.svg`}
             alt="생일잔치 파비콘"
             width="56"
             height="56"
