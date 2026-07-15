@@ -1,4 +1,4 @@
-export const defaultBirthdayName = "병준";
+export const defaultBirthdayName = "";
 
 function hasBatchim(name: string) {
   const lastCharacter = name.at(-1);
@@ -15,12 +15,23 @@ function hasBatchim(name: string) {
 }
 
 export function getBirthdayNameForms(name: string) {
-  const nameHasBatchim = hasBatchim(name);
+  const normalizedName = name.trim();
+
+  if (!normalizedName) {
+    return {
+      plain: "",
+      friendly: "",
+      subject: "",
+      vocative: "",
+    } as const;
+  }
+
+  const nameHasBatchim = hasBatchim(normalizedName);
 
   return {
-    plain: name,
-    friendly: nameHasBatchim ? `${name}이` : name,
-    subject: nameHasBatchim ? `${name}이` : `${name}가`,
-    vocative: `${name}${nameHasBatchim ? "아" : "야"}`,
+    plain: normalizedName,
+    friendly: nameHasBatchim ? `${normalizedName}이` : normalizedName,
+    subject: nameHasBatchim ? `${normalizedName}이` : `${normalizedName}가`,
+    vocative: `${normalizedName}${nameHasBatchim ? "아" : "야"}`,
   } as const;
 }

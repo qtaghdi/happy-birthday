@@ -60,7 +60,7 @@ function getInitialMessageDrafts(): MessageDraft[] {
 function renderBirthdayMessages(vocative: string, customMessages: string[]) {
   const messages = customMessages.length > 0 ? customMessages : defaultMessageTemplates;
 
-  return messages.map((message) => message.replaceAll("{이름}", vocative));
+  return messages.map((message) => message.replaceAll("{이름}", vocative).trim());
 }
 
 const floatingDecorations = [
@@ -125,6 +125,16 @@ export default function Home() {
   const customMessageTemplates = activePayload.m ?? [];
   const { friendly, plain, subject, vocative } = getBirthdayNameForms(birthdayName);
   const birthdayMessages = renderBirthdayMessages(vocative, customMessageTemplates);
+  const ribbonMessage = friendly
+    ? `경축 ${friendly} 열아홉번째 생일`
+    : "경축 열아홉번째 생일";
+  const kickerMessage = subject
+    ? `♬ 오늘 하루 ${subject} 하고 싶은 거 다 해 ♬`
+    : "♬ 오늘 하루 하고 싶은 거 다 해 ♬";
+  const heroTitle = friendly ? `🎉 ${friendly} 생일잔치 🎉` : "🎉 생일잔치 🎉";
+  const marqueeMessage = subject
+    ? `축 생일　★　오늘 하루 ${subject} 하고 싶은 거 다 해　★　축 생일　★　`
+    : "축 생일　★　오늘 하루 하고 싶은 거 다 해　★　축 생일　★　";
 
   useEffect(() => {
     return () => {
@@ -149,7 +159,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const nextTitle = `${vocative} 생일 축하한다`;
+    const nextTitle = vocative ? `${vocative} 생일 축하한다` : "생일 축하한다";
     const keepTitleInSync = () => {
       if (document.title !== nextTitle) document.title = nextTitle;
     };
@@ -313,17 +323,20 @@ export default function Home() {
 
         <div className="top-ribbon">
           <span>★ 경 축 ★</span>
-          <strong>경축 {friendly} 열아홉번째 생일</strong>
+          <strong>{ribbonMessage}</strong>
           <span>★ 만 수 무 강 ★</span>
         </div>
 
         <header className="hero">
-          <p className="hero-kicker">♬ 오늘 하루 {subject} 하고 싶은 거 다 해 ♬</p>
-          <h1>🎉 {friendly} 생일잔치 🎉</h1>
-          <div className="blink-sign" aria-label={`오늘의 주인공 ${plain}`}>
+          <p className="hero-kicker">{kickerMessage}</p>
+          <h1>{heroTitle}</h1>
+          <div
+            className="blink-sign"
+            aria-label={plain ? `오늘의 주인공 ${plain}` : "오늘의 주인공"}
+          >
             <span>오늘의</span>
             <b>주인공</b>
-            <span>{plain}</span>
+            {plain && <span>{plain}</span>}
           </div>
         </header>
 
@@ -403,7 +416,8 @@ export default function Home() {
               </div>
 
               <p className="editor-status" aria-live="polite">
-                {editorStatus || `현재 잔치 주인공: ${plain}`}
+                {editorStatus ||
+                  (plain ? `현재 잔치 주인공: ${plain}` : "이름과 멘트를 입력해 주세요.")}
               </p>
 
               {shareUrl && (
@@ -430,7 +444,7 @@ export default function Home() {
 
           <p className="equals-line" aria-hidden="true">================================</p>
           <div className="cake-bounce" aria-hidden="true">🎂</div>
-          <h2 id="birthday-message-title">{vocative}!!</h2>
+          <h2 id="birthday-message-title">{vocative ? `${vocative}!!` : "생일 축하해!!"}</h2>
           <p className="main-wish">생일 진심으로 축하한다!!</p>
           <p className="sub-wish">
             오늘만큼은<br />
@@ -465,8 +479,8 @@ export default function Home() {
 
         <div className="marquee" aria-hidden="true">
           <div className="marquee-track">
-            <span>축 생일　★　오늘 하루 {subject} 하고 싶은 거 다 해　★　축 생일　★　</span>
-            <span>축 생일　★　오늘 하루 {subject} 하고 싶은 거 다 해　★　축 생일　★　</span>
+            <span>{marqueeMessage}</span>
+            <span>{marqueeMessage}</span>
           </div>
         </div>
 
@@ -486,12 +500,14 @@ export default function Home() {
           className={`final-overlay ${finalPhase === "show" ? "is-revealed" : "is-dimming"}`}
           role="dialog"
           aria-modal="true"
-          aria-label={`${friendly} 최종 생일 축하`}
+          aria-label={friendly ? `${friendly} 최종 생일 축하` : "최종 생일 축하"}
         >
           <div className="final-rays" aria-hidden="true" />
           <div className="final-content">
             <div className="final-confetti" aria-hidden="true">🎉🎉🎉</div>
-            <p className="final-headline">생일 축하한다 {plain}!!</p>
+            <p className="final-headline">
+              {plain ? `생일 축하한다 ${plain}!!` : "생일 축하한다!!"}
+            </p>
             <div className="final-confetti" aria-hidden="true">🎉🎉🎉</div>
             <p className="final-note">
               항상 고맙고<br />
